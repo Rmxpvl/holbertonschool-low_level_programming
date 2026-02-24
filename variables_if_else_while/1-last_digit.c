@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-/** main - Program that look for last digit number and determine if 0 or greater than x or equal
+/**
+ * main - Program that look for last digit number and determine if 0 or more
  * Return: 0 if the program run
  */
 
@@ -13,7 +14,7 @@ int main(void)
 	srand(time(0));
 	n = rand() - RAND_MAX / 2;
 
-if (last_digit ==0)
+if (last_digit == 0)
 {
 printf("Last digit of %d is %d and is 0\n", n, last digit);
 }
