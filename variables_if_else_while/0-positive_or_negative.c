@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-/** 
+/**
  * main - Set random number and say positive of not
  * Return: 0 if the program run
  */
