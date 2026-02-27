@@ -15,7 +15,7 @@ while (n <= '9')
 putchar(n);
 n++;
 }
-print_numbers()
+print_numbers();
 putchar('\n');
 return (0);
 }
