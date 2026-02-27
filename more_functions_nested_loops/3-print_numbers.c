@@ -2,8 +2,8 @@
 
 /**
  * main - prints the digits numbers of base 10 starting from 0
- * print_numbers : Show results
- * Return: Always 0
+ * print_numbers - Show results
+ * Return - Always 0
  */
 
 void print_numbers(void)
