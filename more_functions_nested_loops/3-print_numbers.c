@@ -3,11 +3,11 @@
 
 /**
  * main - prints the digits numbers of base 10 starting from 0
- *
+ * print_numbers : Show results
  * Return: Always 0
  */
 
-int main(void)
+void print_numbers(void)
 {
 char n = '0';
 while (n <= '9')
