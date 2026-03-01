@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 /**
+ * main - Point de depart de l'execution
  * Prints the numbers from 1 to 100
  * Multiples of three print Fizz.
  * Multiples of five print Buzz.
