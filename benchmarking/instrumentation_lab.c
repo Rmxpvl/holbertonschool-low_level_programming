@@ -59,7 +59,7 @@ int main(void)
     double total_time, build_time, process_time, reduce_time;
     unsigned long checksum;
 
-    start_total = clock();   // début total
+    start_total = clock();
 
     // Phase 1 : build
     start_build = clock();
