@@ -60,7 +60,7 @@ int main(void)
     unsigned long checksum;
 
     start_total = clock();
-    
+
     start_build = clock();
     build_dataset();
     end_build = clock();
@@ -71,7 +71,7 @@ int main(void)
     end_process = clock();
     process_time = (double)(end_process - start_process) / CLOCKS_PER_SEC;
 
-    // Phase 3 : reduce
+
     start_reduce = clock();
     checksum = reduce_checksum();
     end_reduce = clock();
@@ -80,13 +80,13 @@ int main(void)
     end_total = clock();
     total_time = (double)(end_total - start_total) / CLOCKS_PER_SEC;
 
-    // Contrat exact : 4 lignes, format %.6f
+
     printf("TOTAL seconds: %.6f\n", total_time);
     printf("BUILD_DATA seconds: %.6f\n", build_time);
     printf("PROCESS seconds: %.6f\n", process_time);
     printf("REDUCE seconds: %.6f\n", reduce_time);
 
-    // éviter l’avertissement "unused variable"
+
     if (checksum == 0ul)
         printf("impossible\n");
 
