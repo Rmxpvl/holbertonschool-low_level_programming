@@ -60,14 +60,12 @@ int main(void)
     unsigned long checksum;
 
     start_total = clock();
-
-    // Phase 1 : build
+    
     start_build = clock();
     build_dataset();
     end_build = clock();
     build_time = (double)(end_build - start_build) / CLOCKS_PER_SEC;
 
-    // Phase 2 : process
     start_process = clock();
     process_dataset();
     end_process = clock();
