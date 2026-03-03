@@ -1,9 +1,10 @@
 #include "main.h"
 #include <stdio.h>
 /**
- * main -Assign 402 to 98
- * reset_to_98 - Turn the variable into 98
- * Return: Always 0.
+ * reset_to_98 - updates the value pointed to by n to 98
+ * @n: pointer to an integer to be updated
+ * Description: This function takes a pointer to an int and
+ * sets the value of the integer it points to 98.
  */
 
 void reset_to_98(int *n)
