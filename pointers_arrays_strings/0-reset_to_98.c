@@ -1,7 +1,7 @@
 #include "main.h"
 #include <stdio.h>
 /**
- * main - The code assign n to 402 first then turn it into 98 using the function reset_to_98
+ * main -Assign 402 to 98
  * reset_to_98 - Turn the variable into 98
  * Return: Always 0.
  */
