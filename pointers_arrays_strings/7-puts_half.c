@@ -9,21 +9,21 @@
  */
 void puts_half(char *str)
 {
-    int len = 0;
-    int start;
-    int i;
+int len = 0;
+int start;
+int i;
 
-    /* calculer la longueur */
-    while (str[len] != '\0')
-        len++;
+/* calculer la longueur */
+while (str[len] != '\0')
+len++;
 
-    /* point de départ de la seconde moitié */
-    start = (len + 1) / 2;
+/* point de départ de la seconde moitié */
+start = (len + 1) / 2;
 
-    /* afficher chaque caractère de la seconde moitié */
-    for (i = start; i < len; i++)
-        _putchar(str[i]);
+/* afficher chaque caractère de la seconde moitié */
+for (i = start; i < len; i++)
+_putchar(str[i]);
 
-    /* saut de ligne final */
-    _putchar('\n');
+/* saut de ligne final */
+_putchar('\n');
 }
