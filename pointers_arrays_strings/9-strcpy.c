@@ -3,9 +3,9 @@
 
 /**
  * _strcpy - Copies the string pointed to by src, including the terminating null byte
- * @dest: pointer to the destination buffer where the string will be copied
+ * @dest: pointer to the destination
  * @src: pointer to the source string to be copied
- * Description: This function takes two pointers to char, dest and src, and copies the string
+ * Description: Takes two pointers to char, dest and src, and copies the string
  */
 
  char *_strcpy(char *dest, char *src)
