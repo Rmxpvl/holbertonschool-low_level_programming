@@ -2,9 +2,11 @@
 #include <stdio.h>
 
 /**
- * main - check the code
- *
- * Return: Always 0.
+ * rev_string - Reverses a string
+ * @s: pointer to the string to be reversed
+ * Description: This function takes a pointer to a string and
+ * reverses the string in place.
+ * Return: Nothing
  */
 
 void rev_string(char *s)
@@ -14,12 +16,12 @@ int len = 0;
 char tmp;
 
 while (s[len] != '\0')
-    len++;
+len++;
 
-    for (i = 0; i < len / 2; i++)
+for (i = 0; i < len / 2; i++)
 {
-    char tmp = s[i];
-    s[i] = s[len - 1 - i];
-    s[len - 1 - i] = tmp;
+tmp = s[i];
+s[i] = s[len - 1 - i];
+s[len - 1 - i] = tmp;
 }
 }
