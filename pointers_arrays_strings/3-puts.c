@@ -8,8 +8,7 @@
  * prints the string to the standard output, followed by a new line.
  */
 
-void _puts(char *str);
-
+void _puts(char *str)
 {
 int i = 0;
 
