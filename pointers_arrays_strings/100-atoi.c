@@ -12,7 +12,7 @@ int _atoi(char *s)
 int result = 0;
 int sign = 1;
 int i = 0;
-int started = 0; /* flag pour indiquer si la conversion a commencé */
+int started = 0;
 
 while (s[i] != '\0')
 {
@@ -24,9 +24,10 @@ else if (s[i] >= '0' && s[i] <= '9')
 {
 result = result * 10 + s[i] - '0';
 started = 1;
-}	else if (started)
-break; /* arrêter la conversion si un caractère non numérique est rencontré après le début */
+}
+else if (started)
+break;
 i++;
 }
-return (result * sign);
+return (result *sign);
 }
