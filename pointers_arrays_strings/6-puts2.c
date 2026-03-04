@@ -7,13 +7,10 @@
 
 void puts2(char *str)
 {
-int i = 0;
-
-while (str[i] != '\0')
+while (*str != '\0')
 {
-_putchar(str[i]);  /* affiche le caractère courant */
-i += 2;            /* passe au caractère suivant "tous les deux" */
+_putchar(*str);
+str += 2;
 }
-
-_putchar('\n');        /* saut de ligne final */
+_putchar('\n');
 }
