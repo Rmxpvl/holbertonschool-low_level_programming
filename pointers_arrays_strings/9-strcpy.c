@@ -2,10 +2,11 @@
 #include <stdio.h>
 
 /**
- * _strcpy - Copies the string pointed to by src with null
+ * _strcpy - Copies the string pointed to by src, including the terminating null byte
  * @dest: pointer to the destination
  * @src: pointer to the source string to be copied
  * Description: Takes two pointers to char, dest and src, and copies the string
+ * Return: the pointer to dest
  */
 
 char *_strcpy(char *dest, char *src)
