@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 /**
- * _strcpy - Copies the string pointed to by src, including the terminating null byte
+ * _strcpy -copy string src to dest and null
  * @dest: pointer to the destination
  * @src: pointer to the source string to be copied
  * Description: Takes two pointers to char, dest and src, and copies the string
