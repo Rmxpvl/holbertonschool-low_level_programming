@@ -19,8 +19,8 @@ for (j = 0; sep[j] != '\0'; j++)
 {
 if (str[i] == sep[j])
 {
-    if (str[i + 1] >= 'a' && str[i + 1] <= 'z')
-        str[i + 1] = str[i + 1] - 32;
+if (str[i + 1] >= 'a' && str[i + 1] <= 'z')
+str[i + 1] = str[i + 1] - 32;
 }
 }
 i++;
