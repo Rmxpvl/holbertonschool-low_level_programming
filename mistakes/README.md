@@ -353,3 +353,28 @@ printf("Entrez votre âge : ");
 scanf("%d", &age);   /* & donne l'adresse de age – correct */
 printf("Vous avez %d ans\n", age);
 ```
+
+---
+
+## Points clés
+
+- Les erreurs les plus fréquentes en C ne sont **pas** des erreurs de syntaxe — ce sont des erreurs logiques silencieuses.
+- Compiler avec `-Wall -Wextra` détecte beaucoup d'erreurs courantes avant l'exécution.
+- `=` est l'affectation, `==` est la comparaison — une confusion très fréquente.
+- Les tableaux commencent à l'index 0 — l'index maximal est `taille - 1`.
+- `malloc` retourne `NULL` en cas d'échec — toujours vérifier avant d'utiliser.
+- `free` doit être appelé exactement une fois par `malloc` — ni zéro fois (fuite), ni deux fois (double free).
+- Ne jamais retourner l'adresse d'une variable locale — elle n'existe plus après la fin de la fonction.
+
+---
+
+## Erreurs courantes — Récapitulatif par catégorie
+
+| Catégorie | Erreurs couvertes |
+|-----------|------------------|
+| Chaînes | Oubli de `'\0'`, `char *` vs `char[]` |
+| Conditions | `=` vs `==`, parenthèses manquantes |
+| Boucles | Off-by-one, boucle infinie, accumulateur non initialisé |
+| Pointeurs | NULL, variable locale retournée, `&` oublié avec `scanf` |
+| Mémoire | Fuite malloc, double free, variable non initialisée |
+| Types | Division entière, débordement d'entier |
