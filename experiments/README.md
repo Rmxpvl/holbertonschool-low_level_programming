@@ -218,3 +218,25 @@ int main(void)
 - [`../simple-calculator/calculator.c`](../simple-calculator/calculator.c) – Calculatrice interactive
 - [`../benchmarking/baseline_loop.c`](../benchmarking/baseline_loop.c) – Mesure de performance
 - [`../benchmarking/instrumentation_lab.c`](../benchmarking/instrumentation_lab.c) – Instrumentation multi-phases
+
+---
+
+## Points clés
+
+- Un programme d'expérimentation doit être **autonome** et compilable indépendamment.
+- Toujours initialiser les variables avant de les utiliser — les valeurs non initialisées en C sont indéterminées.
+- `volatile` est indispensable dans les benchmarks pour éviter que le compilateur n'optimise la boucle.
+- Les pointeurs sont des entiers stockant des adresses — l'arithmétique des pointeurs s'exprime en unités de la taille du type pointé.
+- La récursion nécessite un **cas de base** pour s'arrêter (sinon : débordement de pile).
+
+---
+
+## Erreurs courantes
+
+| Erreur | Explication | Correction |
+|--------|-------------|------------|
+| Variable non initialisée | Valeur aléatoire au départ → résultats imprévisibles | Toujours initialiser : `int somme = 0;` |
+| Oublier `volatile` dans un benchmark | Le compilateur supprime la boucle → temps = 0 | Ajouter `volatile` à la variable mesurée |
+| Récursion sans cas de base | Boucle infinie → stack overflow | Toujours définir la condition d'arrêt en premier |
+| Confondre `char *` et `char[]` | `char *p = "abc"` → chaîne constante (non modifiable) | Utiliser `char tab[] = "abc"` pour modifier |
+| Oublier `'\0'` en fin de chaîne | Affichage hors limites → comportement indéfini | Terminer toujours les chaînes avec `'\0'` |

@@ -1,32 +1,164 @@
-# Hello, World – C Programming Basics
+# Hello, World – Premiers pas en C
 
-This project introduces the fundamentals of compiling and running C programs, covering the different steps of the compilation pipeline and basic output functions.
+Ce dossier couvre les bases absolues du langage C : la compilation, les étapes de transformation du code source, et les premières fonctions d'affichage.
 
-## Files
+---
 
-| File | Description |
-|------|-------------|
-| `0-preprocessor` | Script that runs a C file through the preprocessor and saves the result into another file |
-| `1-compiler` | Script that compiles a C file without linking and creates a `.o` object file |
-| `2-assembler` | Script that generates the assembly code of a C file and creates a `.s` file |
-| `3-name` | Script that compiles a C file and creates an executable named `cisfun` |
-| `4-puts.c` | Program that prints a string using `puts` |
-| `5-printf.c` | Program that prints a string using `printf` |
-| `6-size.c` | Program that prints the size in bytes of the basic C data types |
+## Table des matières
 
-## Concepts Covered
+1. [Le processus de compilation](#1-le-processus-de-compilation)
+2. [Les étapes de compilation avec gcc](#2-les-étapes-de-compilation-avec-gcc)
+3. [Afficher du texte : puts et printf](#3-afficher-du-texte--puts-et-printf)
+4. [L'opérateur sizeof](#4-lopérateur-sizeof)
+5. [Points clés](#5-points-clés)
+6. [Erreurs courantes](#6-erreurs-courantes)
 
-- The C compilation pipeline: preprocessing → compiling → assembling → linking
-- Using `gcc` flags: `-E` (preprocess), `-c` (compile), `-S` (assemble)
-- Printing output with `puts` and `printf`
-- `sizeof` operator for basic types (`char`, `int`, `long int`, `long long int`, `float`)
+---
 
-## Requirements
+## 1. Le processus de compilation
 
-- All scripts are written in Bash
-- All C files are compiled with `gcc -Wall -Werror -Wextra -pedantic`
-- Programs are compiled on Ubuntu 20.04 LTS
+En C, le code source passe par **4 étapes** avant de devenir un programme exécutable :
 
-## Author
+```
+Fichier .c  →  Préprocesseur  →  Compilateur  →  Assembleur  →  Éditeur de liens  →  Exécutable
+```
 
-Holberton School – Low Level Programming
+| Étape | Outil/flag | Résultat |
+|-------|-----------|---------|
+| Préprocessing | `gcc -E` | Fichier `.c` étendu (macros développées) |
+| Compilation | `gcc -S` | Fichier assembleur `.s` |
+| Assemblage | `gcc -c` | Fichier objet `.o` |
+| Édition de liens | `gcc` | Exécutable final |
+
+---
+
+## 2. Les étapes de compilation avec gcc
+
+### 0-preprocessor — Préprocessing uniquement
+
+```bash
+#!/bin/bash
+gcc -E "$CFILE" -o c
+```
+
+Le flag `-E` arrête la compilation après le préprocessing. Il développe les `#include`, `#define`, et macros. Le résultat est un fichier `.c` étendu.
+
+### 1-compiler — Compilation sans édition de liens
+
+```bash
+#!/bin/bash
+gcc -c "$CFILE" -o "${CFILE%.c}.o"
+```
+
+Le flag `-c` compile le fichier `.c` en fichier objet `.o` sans créer d'exécutable.
+
+### 2-assembler — Génération du code assembleur
+
+```bash
+#!/bin/bash
+gcc -S "$CFILE" -o "${CFILE%.c}.s"
+```
+
+Le flag `-S` produit le code assembleur (`.s`), lisible par un humain, avant l'assemblage.
+
+### 3-name — Compilation complète vers un exécutable nommé
+
+```bash
+#!/bin/bash
+gcc "$CFILE" -o "cisfun"
+```
+
+Sans flag spécial, `gcc` effectue toutes les étapes et produit un exécutable. L'option `-o` fixe le nom de sortie.
+
+---
+
+## 3. Afficher du texte : puts et printf
+
+### 4-puts.c — La fonction puts()
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    puts("\"Programming is like building a multilingual puzzle");
+    return (0);
+}
+```
+
+**Explication :** `puts()` affiche une chaîne de caractères et ajoute **automatiquement** un saut de ligne (`\n`) à la fin. Elle est plus simple que `printf` pour afficher du texte brut.
+
+### 5-printf.c — La fonction printf()
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    printf("with proper grammar, but the outcome is a piece of art,\n");
+    return (0);
+}
+```
+
+**Explication :** `printf()` est plus flexible : elle accepte des **spécificateurs de format** (`%d`, `%s`, `%f`…) et ne rajoute **pas** de saut de ligne automatiquement — il faut l'écrire explicitement avec `\n`.
+
+| Fonction | Saut de ligne auto | Format | Usage |
+|---------|-------------------|--------|-------|
+| `puts` | Oui | Non | Texte brut simple |
+| `printf` | Non | Oui | Affichage formaté |
+
+---
+
+## 4. L'opérateur sizeof
+
+### 6-size.c — Tailles des types de base
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    printf("Size of a char: %zu byte(s)\n", sizeof(char));
+    printf("Size of an int: %zu byte(s)\n", sizeof(int));
+    printf("Size of a long int: %zu byte(s)\n", sizeof(long int));
+    printf("Size of a long long int: %zu byte(s)\n", sizeof(long long int));
+    printf("Size of a float: %zu byte(s)\n", sizeof(float));
+    return (0);
+}
+```
+
+**Explication :** `sizeof` est un **opérateur** (pas une fonction) qui retourne la taille en octets d'un type ou d'une variable. `%zu` est le spécificateur de format pour les valeurs de type `size_t`.
+
+Résultats typiques sur un système 64 bits :
+
+| Type | Taille |
+|------|--------|
+| `char` | 1 octet |
+| `int` | 4 octets |
+| `long int` | 8 octets |
+| `long long int` | 8 octets |
+| `float` | 4 octets |
+
+---
+
+## 5. Points clés
+
+- Le code C doit toujours être **compilé** avant d'être exécuté.
+- `gcc` effectue les 4 étapes automatiquement sauf si on utilise un flag pour s'arrêter plus tôt.
+- `puts()` ajoute un `\n` automatiquement, `printf()` ne le fait pas.
+- `sizeof` est un **opérateur** évalué à la compilation, pas à l'exécution.
+- Le spécificateur `%zu` est correct pour `sizeof` (type `size_t`).
+- Toujours inclure `<stdio.h>` pour utiliser `puts`, `printf`.
+- Le `return (0)` dans `main` signifie que le programme s'est terminé **sans erreur**.
+
+---
+
+## 6. Erreurs courantes
+
+| Erreur | Explication | Correction |
+|--------|-------------|------------|
+| Oublier `#include <stdio.h>` | `printf`/`puts` ne sont pas déclarés → erreur de compilation | Toujours inclure `<stdio.h>` en tête |
+| Utiliser `%d` avec `sizeof` | `sizeof` retourne `size_t`, pas `int` → avertissement | Utiliser `%zu` |
+| Oublier `\n` avec `printf` | L'affichage ne revient pas à la ligne | Ajouter `\n` à la fin de la chaîne |
+| Confondre `-c` et `-S` | `-c` produit un `.o`, `-S` produit un `.s` | Se souvenir : `-S` = **S**ource assembleur, `-c` = **c**ompilé |
+| Compiler avec un nom incorrect | `./a.out` au lieu du nom voulu | Utiliser `-o nom_exe` pour nommer l'exécutable |

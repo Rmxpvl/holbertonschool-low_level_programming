@@ -1,95 +1,162 @@
-Voici un README simple et propre pour ton projet de calculette en C.
+# Calculatrice Simple en C
 
-Calculator in C
-Description
+Ce projet est une calculatrice interactive en ligne de commande, écrite en C. Il illustre l'utilisation de `scanf`, des structures `if/else if/else`, la gestion d'erreurs et les conversions de types.
 
-Cette application est une calculatrice simple écrite en C qui permet à l’utilisateur d’effectuer plusieurs opérations mathématiques de base depuis le terminal.
+---
 
-L’utilisateur peut choisir entre :
+## Table des matières
 
-Addition
+1. [Description du programme](#1-description-du-programme)
+2. [Lecture des entrées utilisateur avec scanf](#2-lecture-des-entrées-utilisateur-avec-scanf)
+3. [Structure du code](#3-structure-du-code)
+4. [La division et le cast de type](#4-la-division-et-le-cast-de-type)
+5. [Points clés](#5-points-clés)
+6. [Erreurs courantes](#6-erreurs-courantes)
 
-Soustraction
+---
 
-Multiplication
+## 1. Description du programme
 
-Division
+La calculatrice propose 4 opérations de base :
 
-Le programme demande ensuite deux nombres et affiche le résultat.
+```
+1 → Addition
+2 → Soustraction
+3 → Multiplication
+4 → Division
+0 → Quitter
+```
 
-La division gère également :
+L'utilisateur choisit une opération, saisit deux nombres, et le résultat s'affiche.
 
-l'erreur division par zéro
+### Compilation et exécution
 
-l'affichage entier ou décimal selon le résultat.
-
-Fonctionnalités
-
-Menu interactif dans le terminal
-
-Calcul de :
-
-addition
-
-soustraction
-
-multiplication
-
-division
-
-Gestion de la division par zéro
-
-Affichage intelligent du résultat :
-
-entier si possible
-
-sinon affichage avec 2 décimales
-
-Compilation
-
-Pour compiler le programme :
-
-gcc calculator.c -o calculator
-Exécution
-
-Une fois compilé :
-
+```bash
+gcc -Wall -Wextra -pedantic calculator.c -o calculator
 ./calculator
-Exemple d'utilisation
+```
+
+### Exemple d'utilisation
+
+```
 Veuillez saisir une opération :
 1 pour addition
-2 pour soustraction
-3 pour multiplication
-4 pour division
-0 pour quitter
-
+...
 1
 Veuillez saisir le premier nombre :
 10
 Veuillez saisir le deuxième nombre :
-5
-Le résultat de votre addition est : 15
-Gestion des erreurs
+3
+Le résultat de votre addition est : 13
+```
 
-Le programme vérifie si l’utilisateur tente de diviser par zéro.
+---
 
-Exemple :
+## 2. Lecture des entrées utilisateur avec scanf
 
-Erreur : Il est impossible de diviser par zéro ! Baka !
-Améliorations possibles
+`scanf` lit une entrée depuis le clavier et la stocke dans une variable.
 
-Améliorations intéressantes pour la suite :
+```c
+int choix;
+printf("Votre choix : ");
+scanf("%d", &choix);   /* & est obligatoire — passe l'adresse de choix */
+```
 
-Ajouter une boucle pour relancer la calculatrice
+**Important :** Toujours utiliser `&` devant la variable (sauf pour les tableaux/pointeurs).
 
-Ajouter d’autres opérations :
+| Format | Type | Exemple |
+|--------|------|---------|
+| `%d` | `int` | `scanf("%d", &n)` |
+| `%f` | `float` | `scanf("%f", &f)` |
+| `%c` | `char` | `scanf("%c", &c)` |
+| `%s` | chaîne | `scanf("%s", chaine)` (pas de `&`) |
 
-modulo
+---
 
-puissance
+## 3. Structure du code
 
-racine carrée
+Le programme utilise des `if/else if/else` imbriqués pour traiter chaque opération :
 
-Nettoyer le code en utilisant des fonctions
+```c
+if (user_choice == 1)
+{
+    /* addition */
+    scanf("%d", &num1);
+    scanf("%d", &num2);
+    result = num1 + num2;
+    printf("Le résultat : %d\n", result);
+}
+else if (user_choice == 2)
+{
+    /* soustraction */
+}
+else if (user_choice == 3)
+{
+    /* multiplication */
+}
+else if (user_choice == 4)
+{
+    /* division — cas spécial */
+}
+else if (user_choice == 0)
+{
+    printf("Tu me quittes déjà ?\n");
+}
+else
+{
+    printf("Choix invalide.\n");
+}
+```
 
-Ajouter une interface plus robuste pour les entrées utilisateur
+---
+
+## 4. La division et le cast de type
+
+La division est le cas le plus complexe car elle nécessite :
+
+1. **Vérifier la division par zéro**
+2. **Afficher un entier ou un décimal** selon le résultat
+
+```c
+if (numB == 0)
+{
+    printf("Erreur : Il est impossible de diviser par zéro ! Baka !\n");
+    return (0);
+}
+else
+{
+    result_division = (float)numA / (float)numB;  /* cast en float avant la division */
+}
+
+if (result_division == (int)result_division)
+    printf("Résultat entier : %d\n", (int)result_division);
+else
+    printf("Résultat décimal : %.2f\n", result_division);
+```
+
+**Pourquoi `(float)numA / (float)numB` ?**
+
+Sans le cast, `10 / 3` donne `3` (division entière). Avec le cast, `10.0f / 3.0f` donne `3.333...`.
+
+---
+
+## 5. Points clés
+
+- `scanf("%d", &variable)` : le `&` est **obligatoire** pour les variables simples (`int`, `float`, `char`).
+- En C, la division entre deux entiers donne un entier tronqué : `7 / 2 = 3`.
+- Pour obtenir un résultat décimal, au moins un des opérandes doit être `float` : `(float)7 / 2 = 3.5`.
+- Toujours vérifier la division par zéro **avant** d'effectuer la division.
+- `if (result == (int)result)` vérifie si un `float` est un entier (pas de partie décimale).
+- Le `return (0)` dans le cas d'erreur arrête le programme proprement.
+
+---
+
+## 6. Erreurs courantes
+
+| Erreur | Explication | Correction |
+|--------|-------------|------------|
+| Oublier `&` dans `scanf` | `scanf("%d", n)` passe la valeur de `n`, pas son adresse → comportement indéfini | Écrire `scanf("%d", &n)` |
+| Division entière | `int / int` tronque le résultat décimal | Caster au moins un opérande en `float` avant la division |
+| Ne pas vérifier la division par zéro | Division par 0 → comportement indéfini (crash) | Vérifier `if (b == 0)` avant de diviser |
+| `if (choix = 1)` au lieu de `if (choix == 1)` | Affecte 1 à `choix` → condition toujours vraie | Utiliser `==` pour les comparaisons |
+| Pas de cas `else` final | Si l'utilisateur entre une valeur inconnue, rien ne s'affiche | Toujours prévoir un `else` pour les cas non gérés |
