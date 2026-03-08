@@ -10,28 +10,28 @@
  */
 int main(int argc, char *argv[])
 {
-    int sum = 0;
-    int i, j;
+int sum = 0;
+int i, j;
 
-    if (argc == 1)  /* No numbers provided */
-    {
-        printf("0\n");
-        return 0;
-    }
+if (argc == 1)  /* No numbers provided */
+{
+printf("0\n");
+return 0;
+}
 
-    for (i = 1; i < argc; i++)  /* Loop over each argument */
-    {
-        for (j = 0; argv[i][j] != '\0'; j++)  /* Check every character */
-        {
-            if (!isdigit(argv[i][j]))  /* Non-digit found */
-            {
-                printf("Error\n");
-                return 1;
-            }
-        }
-        sum += atoi(argv[i]);  /* Convert argument to int and add */
-    }
+for (i = 1; i < argc; i++)  /* Loop over each argument */
+{
+for (j = 0; argv[i][j] != '\0'; j++)  /* Check every character */
+{
+if (!isdigit(argv[i][j]))  /* Non-digit found */
+{
+printf("Error\n");
+return 1;
+}
+}
+sum += atoi(argv[i]);  /* Convert argument to int and add */
+}
 
-    printf("%d\n", sum);  /* Print total sum */
-    return 0;
+printf("%d\n", sum);  /* Print total sum */
+return 0;
 }
