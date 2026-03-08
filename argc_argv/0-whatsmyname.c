@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "main.h"
 
 /**
  * afficher_nom_programme - Affiche le nom du programme
