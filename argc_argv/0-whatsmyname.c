@@ -1,16 +1,14 @@
 #include "main.h"
+#include <stdio.h>
 
 /**
- * main - Affiche le nom du programme
- * @argc: Nombre d'arguments passés au programme
- * @argv: Tableau de chaînes de caractères représentant les arguments, ici 0.
- * Description: Cette fonction affiche le nom du programme, qui est le premier argument passé à la fonction main. Le nom du programme est stocké dans argv[0].
+ * afficher_nom_programme - Affiche le nom du programme
+ * @argv: Tableau des arguments passés au programme
+ * Description: Affiche le nom du fichier grace a argv et printant le array 0 qui contient le nom du programme
  * Return: 0 (succès)
  */
-
-int main(int argc, char *argv[])
+void afficher_nom_programme(char *argv[])
 {
-    char *Nom_programme = argv[0];  // Stocke le nom du programme
-    printf("Nom du programme : %s\n", Nom_programme);
-    return 0;
+    printf("Nom du programme : %s\n", argv[0]);
+    return (0);
 }
