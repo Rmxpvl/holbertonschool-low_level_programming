@@ -4,7 +4,7 @@
  * main - Print the name of the program
  * @argc: The number of command line arguments
  * @argv: An array of strings containing the command line arguments
- * Description: This program prints the name of the program, followed by a new line.
+ * Description: Ecris le nom du programme.
  * Return: 0
  */
 
