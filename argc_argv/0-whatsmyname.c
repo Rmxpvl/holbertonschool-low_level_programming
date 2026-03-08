@@ -1,12 +1,8 @@
 #include <stdio.h>
-#include "main.h"
 
-/**
- * afficher_nom_programme - Affiche le nom du programme
- * @argv: Tableau des arguments passés au programme
- * Description: Affiche le nom du fichier grace a argv et printant le array 0 qui contient le nom du programme
- */
-void afficher_nom_programme(char *argv[])
+int main(int argc, char *argv[])
 {
-    printf("Nom du programme : %s\n", argv[0]);
+    (void)argc;  // avoid "unused variable" warning
+    printf("%s\n", argv[0]);
+    return 0;
 }
