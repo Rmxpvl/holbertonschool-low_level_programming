@@ -7,9 +7,6 @@
  * malloc.
  * @s1: the first string. If NULL, treated as an empty string.
  * @s2: the second string. If NULL, treated as an empty string.
- * Return: a pointer to the new concatenated string, or NULL if malloc fails. malloc.
- * @s1: the first string. If NULL, treated as an empty string.
- * @s2: the second string. If NULL, treated as an empty string.
  * Return: a pointer to the new concatenated string, or NULL if malloc fails.
  */
 
@@ -19,8 +16,7 @@ int len1 = 0;
 int len2 = 0;
 char *concat;
 
-
-    if (s1 == NULL)
+if (s1 == NULL)
 s1 = "";
 if (s2 == NULL)
 s2 = "";
@@ -34,17 +30,17 @@ len2++;
 concat = malloc(sizeof(char) * (len1 + len2 + 1));
 
 if (concat == NULL)
-    return (NULL);
+return (NULL);
 
 int i, j;
 for (i = 0; i < len1; i++)
 {
-    concat[i] = s1[i];
+concat[i] = s1[i];
 }
 for (j = 0; j < len2; j++)
 {
-    concat[i + j] = s2[j];
+concat[i + j] = s2[j];
 }
 concat[i + j] = '\0';
-return concat;
+return (concat);
 }
