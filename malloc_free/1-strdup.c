@@ -11,21 +11,22 @@
 
 char *_strdup(char *str)
 {
-char *dupli;
-int len = 0;
-int i;
-if (str == NULL)
+char *dupli; /* pointer to the duplicated string */
+int len = 0; /* length of the original string */
+int i; /* loop index */
+
+if (str == NULL) /* NULL input: return NULL as per strdup behavior */
 return (NULL);
 
-while (str[len] != '\0')
+while (str[len] != '\0') /* count characters to get string length */
 len++;
 
-dupli = malloc(sizeof(char) * (len + 1));
+dupli = malloc(sizeof(char) * (len + 1)); /* allocate len + 1 for '\0' */
 
-if (dupli == NULL)
+if (dupli == NULL) /* check if malloc failed */
 return (NULL);
 
-for (i = 0; i <= len; i++)
+for (i = 0; i <= len; i++) /* copy each character including '\0' */
 dupli[i] = str[i];
-return (dupli);
+return (dupli); /* return pointer to the duplicated string */
 }

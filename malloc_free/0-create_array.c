@@ -11,19 +11,19 @@
  */
 char *create_array(unsigned int size, char c)
 {
-char *array;
-unsigned int i;
-if (size == 0)
+char *array; /* pointer to the new array */
+unsigned int i; /* loop index */
+
+if (size == 0) /* cannot create an array of size 0 */
 return (NULL);
 
+array = malloc(sizeof(char) * size); /* allocate memory for the array */
 
-array = malloc(sizeof(char) * size);
-
-if (array == NULL)
+if (array == NULL) /* check if malloc failed */
 return (NULL);
-for (i = 0; i < size; i++)
+for (i = 0; i < size; i++) /* fill each element with the given char */
 {
-array[i] = c;
+array[i] = c; /* set current element to c */
 }
-return (array);
+return (array); /* return pointer to the filled array */
 }
