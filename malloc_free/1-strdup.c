@@ -3,8 +3,10 @@
 #include <stdlib.h>
 
 /**
- *
- *
+ * _strdup - duplicates a string in memory (using malloc).
+ * @str: the string to duplicate.
+ * Return: a pointer to the duplicated string, or NULL if str is NULL
+ * or malloc fails.
  */
 
 char *_strdup(char *str)

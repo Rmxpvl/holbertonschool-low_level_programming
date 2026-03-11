@@ -3,8 +3,14 @@
 #include <stdlib.h>
 
 /**
- *
- *
+ * str_concat - concatenates two strings into a new string allocated with
+ * malloc.
+ * @s1: the first string. If NULL, treated as an empty string.
+ * @s2: the second string. If NULL, treated as an empty string.
+ * Return: a pointer to the new concatenated string, or NULL if malloc fails. malloc.
+ * @s1: the first string. If NULL, treated as an empty string.
+ * @s2: the second string. If NULL, treated as an empty string.
+ * Return: a pointer to the new concatenated string, or NULL if malloc fails.
  */
 
 char *str_concat(char *s1, char *s2)
