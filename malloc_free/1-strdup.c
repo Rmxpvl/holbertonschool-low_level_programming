@@ -4,6 +4,11 @@
 
 /**
  * _strdup - duplicates a string in memory (using malloc).
+ * Objective: Reproduce the behaviour of the standard strdup function.
+ * Measure the length of the input string, allocate exactly the right
+ * amount of memory, then copy each character including the null
+ * terminator into the new buffer. The caller is responsible for
+ * freeing the returned pointer.
  * @str: the string to duplicate.
  * Return: a pointer to the duplicated string, or NULL if str is NULL
  * or malloc fails.

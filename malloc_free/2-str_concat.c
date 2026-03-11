@@ -4,6 +4,10 @@
 /**
  * str_concat - concatenates two strings into a new string allocated with
  * malloc.
+ * Objective: Compute the total length needed for both strings, allocate
+ * a single buffer large enough to hold them both plus the null terminator,
+ * then copy s1 followed by s2 into that buffer. NULL pointers are treated
+ * as empty strings so the function never dereferences an invalid pointer.
  * @s1: the first string. If NULL, treated as an empty string.
  * @s2: the second string. If NULL, treated as an empty string.
  * Return: a pointer to the new concatenated string, or NULL if malloc fails.

@@ -5,6 +5,9 @@
 /**
  * create_array - creates an array of chars and initializes it with a
  * specific char.
+ * Objective: Allocate a block of memory of 'size' bytes using malloc,
+ * then fill every byte with the character 'c'. This demonstrates the
+ * basic use of malloc to create a dynamically-sized buffer at runtime.
  * @size: the size of the array to create.
  * @c: the char to initialize the array with.
  * Return: a pointer to the array, or NULL if size is 0 or malloc fails.

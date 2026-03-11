@@ -2,6 +2,13 @@
 
 Ce dossier introduit l'**allocation dynamique de mémoire** en C avec `malloc` et `free`.
 
+## Objectif général
+
+Comprendre comment allouer et libérer de la mémoire sur le **tas (heap)** au moment de l'exécution du programme, contrairement aux variables locales qui sont stockées sur la pile. Chaque exercice entraîne à :
+- Calculer la taille exacte à allouer
+- Vérifier systématiquement que `malloc` n'a pas retourné `NULL`
+- Libérer proprement toute mémoire allouée pour éviter les fuites
+
 ---
 
 ## Table des matières

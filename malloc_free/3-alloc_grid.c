@@ -3,6 +3,11 @@
 
 /**
  * alloc_grid - returns a pointer to a 2 dimensional array of integers.
+ * Objective: Allocate a true 2D grid dynamically using an array of
+ * pointers to rows. First allocate the array of row pointers, then
+ * allocate each individual row. Every integer cell is initialised to 0.
+ * If any allocation fails, all previously allocated memory is freed
+ * before returning NULL to avoid memory leaks.
  * @width: the width of the grid.
  * @height: the height of the grid.
  * Return: a pointer to the 2D array, or NULL on failure or if
