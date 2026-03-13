@@ -35,6 +35,7 @@
 | [intro_debugging/](./intro_debugging/) | Exercices de débogage : sommes, tables, boucles |
 | [benchmarking/](./benchmarking/) | Mesure de performances CPU, comparaison O(n²) vs O(n) |
 | [simple-calculator/](./simple-calculator/) | Calculatrice interactive en C |
+| [more_malloc_free/](./more_malloc_free/) | Allocation dynamique avancée avec `malloc_checked` |
 
 ---
 
