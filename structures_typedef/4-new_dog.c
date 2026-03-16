@@ -1,27 +1,28 @@
 #include "dog.h"
 #include <stdlib.h>
 
-/
-
-_strlen - returns the length of a string
-@s: string
-Return: length*/
+/**
+ * _strlen - returns the length of a string
+ * @s: string
+ * Return: length of the string
+ */
 int _strlen(char *s)
 {
 int i = 0;
 
 while (s[i])
 i++;
+
 return (i);
 }
 
-/
-
-_strcpy - copies a string
-@dest: destination
-@src: source
-Return: dest*/
-char _strcpy(chardest, char *src)
+/**
+ * _strcpy - copies a string
+ * @dest: destination
+ * @src: source
+ * Return: dest
+ */
+char *_strcpy(char *dest, char *src)
 {
 int i = 0;
 
@@ -30,20 +31,21 @@ while (src[i])
 dest[i] = src[i];
 i++;
 }
+
 dest[i] = '\0';
 return (dest);
 }
 
 /**
- 
-new_dog - creates a new dog
-@name: name of the dog
-@age: age of the dog
-@owner: owner of the dog*
-Return: pointer to new dog, or NULL if it fails*/
-dog_t new_dog(charname, float age, char owner)
+ * new_dog - creates a new dog
+ * @name: name of the dog
+ * @age: age of the dog
+ * @owner: owner of the dog
+ * Return: pointer to new dog, or NULL if it fails
+ */
+dog_t *new_dog(char *name, float age, char *owner)
 {
-dog_td;
+dog_t *d;
 
 if (name == NULL || owner == NULL)
 return (NULL);
