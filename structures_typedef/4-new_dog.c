@@ -17,15 +17,14 @@ dog_t *d;
 char *name_copy;
 char *owner_copy;
 
-if (name == NULL || owner == NULL)
-return (NULL);
-
-/* allocate memory for struct */
+/* allocate memory for struct dog */
 d = malloc(sizeof(dog_t));
 if (d == NULL)
 return (NULL);
 
-/* allocate memory for name copy */
+/* allocate and copy name */
+if (name)
+{
 name_copy = malloc(strlen(name) + 1);
 if (name_copy == NULL)
 {
@@ -33,8 +32,13 @@ free(d);
 return (NULL);
 }
 strcpy(name_copy, name);
+}
+else
+name_copy = NULL;
 
-/* allocate memory for owner copy */
+/* allocate and copy owner */
+if (owner)
+{
 owner_copy = malloc(strlen(owner) + 1);
 if (owner_copy == NULL)
 {
@@ -43,7 +47,11 @@ free(d);
 return (NULL);
 }
 strcpy(owner_copy, owner);
+}
+else
+owner_copy = NULL;
 
+/* assign values */
 d->name = name_copy;
 d->age = age;
 d->owner = owner_copy;
