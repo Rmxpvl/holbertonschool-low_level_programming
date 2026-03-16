@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "dog.h"
 
 /**
@@ -8,7 +6,6 @@
  * @name: name of the dog
  * @age: age of the dog
  * @owner: owner of the dog
- *
  * Return: pointer to new dog (dog_t), or NULL if failure
  */
 dog_t *new_dog(char *name, float age, char *owner)
