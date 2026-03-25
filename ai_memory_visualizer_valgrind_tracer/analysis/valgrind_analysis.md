@@ -1,128 +1,96 @@
-## Valgrind Analysis
+## Valgrind Analysis (Interpreted, Not Just Quoted)
 
----
-
-## Program: heap_example.c
-
-### Valgrind Output Summary
-- definitely lost: 6 bytes in 1 block
-- total heap usage: 5 allocs, 4 frees
-
----
-
-### Error Type
-Memory leak (definitely lost)
-
----
-
-### Memory Object Involved
-A dynamically allocated string (likely "Alice")
-
----
-
-### Explanation
-
-The program allocates memory for a struct and a string:
-
-- struct Person (heap)
-- name (heap)
-
-However, only the struct is freed, not the internal string.
-
-This causes a loss of ownership of the memory block storing the string.
-
-Since no pointer references this memory anymore, it becomes "definitely lost".
-
----
-
-### Root Cause
-
-The program fails to free nested allocations.
-
-Correct memory management requires:
-
-1. free(name)
-2. free(struct)
-
----
-
-## Program: crash_example.c
-
-### Valgrind Output Summary
-- Invalid write of size 4
-- Address 0x0 is not stack'd, malloc'd or free'd
-- Segmentation fault (SIGSEGV)
-
----
-
-### Error Type
-Invalid memory write (NULL pointer dereference)
-
----
-
-### Memory Object Involved
-NULL pointer (address 0x0)
-
----
-
-### Explanation
-
-The program attempts to write to a pointer that is NULL.
-
-Dereferencing a NULL pointer leads to an invalid memory access at address 0x0.
-
-This memory region is not mapped by the operating system, causing a segmentation fault.
-
----
-
-### Root Cause
-
-The program does not check if the pointer is NULL before using it.
-
-This leads to undefined behavior and a crash.
-
----
-
-### Additional Observation
-
-Valgrind reports:
-- 1024 bytes still reachable
-
-This is not the cause of the crash.
-
-It indicates that some heap memory was not freed before the program terminated.
+This file links Valgrind findings to concrete memory misuse in code.
 
 ---
 
 ## Program: stack_example.c
 
-### Valgrind Output Summary
-- No errors reported
-- All heap blocks freed
+### Valgrind summary
+- No invalid read/write reported.
+- No user heap leak reported.
+
+### Interpretation
+- Behavior is expected: the program uses stack locals only.
+- Recursive frames are created and destroyed normally.
+- No pointer escapes the lifetime of its stack frame.
 
 ---
 
-### Error Type
-No memory errors
+## Program: heap_example.c
+
+### Valgrind summary
+- `definitely lost: 6 bytes in 1 block`
+- `total heap usage: 5 allocs, 4 frees`
+
+### Issue type
+- Definite leak (lost ownership).
+
+### Why it happens
+- `person_new` allocates `Person` and `name`.
+- `person_free_partial` frees only `Person`.
+- In `main`, `alice` is passed to `person_free_partial`, so `alice->name` is never freed.
+- Once `alice` struct is freed, no pointer remains to `alice->name`.
+
+### Code-level cause
+- Missing `free(alice->name)` before `free(alice)`.
 
 ---
 
-### Explanation
+## Program: aliasing_example.c
 
-This program uses only stack memory for its operations.
+### Valgrind summary
+- Invalid read after free.
+- Invalid write after free.
+- No leak required for these errors.
 
-Each recursive call creates a new stack frame, and all memory is automatically released when the function returns.
+### Issue type
+- Use-after-free via dangling alias.
 
-No heap misuse occurs.
+### Why it happens
+- `b = a` creates aliasing to the same heap block.
+- `free(a)` ends the lifetime of that block.
+- Accessing through `b` afterwards is invalid because `b` is dangling.
+
+### Code-level cause
+- Post-free operations on `b` (`b[2]`, `b[3]`).
 
 ---
 
-## AI mistake detected
+## Program: crash_example.c
 
-An AI explanation claimed that the crash in crash_example.c was caused by a memory leak.
+### Valgrind summary
+- `Invalid write of size 4`
+- Access at address `0x0`
+- Process ends with `SIGSEGV`
 
-This is incorrect.
+### Issue type
+- NULL pointer dereference (invalid write).
 
-The crash is caused by a NULL pointer dereference (invalid write at address 0x0).
+### Why it happens
+- `n` is 0.
+- `allocate_numbers(0)` returns `NULL` by function logic.
+- `nums[0] = 42` dereferences `NULL`.
+- The fault is deterministic and occurs at the first write through `nums`.
 
-The memory leak observed is only a side effect of the crash, since the program terminates before freeing allocated memory.
+### About "still reachable" blocks
+- Valgrind can show `still reachable` bytes after abrupt termination.
+- This is not evidence that a leak caused the crash.
+- Root cause remains the invalid NULL write.
+
+---
+
+## AI Usage and Critical Review
+
+### How AI was used
+- AI helped draft first-pass explanations and identify candidate issues.
+- All conclusions were then validated against source code paths and Valgrind traces.
+
+### Detected AI limitations
+1. Confusing leak symptoms with crash root cause.
+2. Overgeneralizing `malloc(0)` behavior.
+3. Overstating pointer persistence across recursive calls.
+
+### Why this matters for peer review
+- The report stays causal: misuse in code first, tool message second.
+- If Valgrind text were removed, the reasoning would still explain each bug.
