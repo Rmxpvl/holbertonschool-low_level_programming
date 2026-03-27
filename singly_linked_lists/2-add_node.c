@@ -29,7 +29,9 @@ free(new_node);
 return (NULL);
 }
 
-len = strlen(str);
+len = 0;
+while (str[len] != '\0')
+len++;
 new_node->str = dup;
 new_node->len = (unsigned int)len;
 new_node->next = *head;
