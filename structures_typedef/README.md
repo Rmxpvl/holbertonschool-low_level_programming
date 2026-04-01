@@ -1,170 +1,58 @@
-# Structures & Typedef
+# Structures et Typedef en C
 
-Ce dossier introduit les **structures** en C : comment regrouper plusieurs variables de types différents dans une seule entité, et comment utiliser `typedef` pour simplifier la syntaxe.
+## 📚 Objectifs d'Apprentissage
 
----
-
-## Table des matières
-
-1. [Les structures en C](#1-les-structures-en-c)
-2. [Accéder aux membres d'une structure](#2-accéder-aux-membres-dune-structure)
-3. [Pointeurs et structures](#3-pointeurs-et-structures)
-4. [Typedef](#4-typedef)
-5. [Allocation dynamique avec structures](#5-allocation-dynamique-avec-structures)
-6. [Explication des fichiers](#6-explication-des-fichiers)
-7. [Points clés](#7-points-clés)
-8. [Erreurs courantes](#8-erreurs-courantes)
+- Définir et utiliser les structures (`struct`)
+- Accéder aux membres d'une structure
+- Passer des structures par pointeur
+- Utiliser `typedef` pour créer des alias de types
+- Allouer dynamiquement de la mémoire pour les structures
+- Libérer la mémoire correctement
 
 ---
 
-## 1. Les structures en C
+## 🎯 Concepts Clés
 
-Une **structure** est un type de donnée composé qui permet de regrouper plusieurs variables, même de types différents, dans une seule entité.
+### Qu'est-ce qu'une Structure ?
 
-### Déclaration d'une structure
+Une **structure** est un type de données composite qui regroupe plusieurs variables de types différents sous un même nom. C'est une façon d'organiser les données liées.
 
+**Syntaxe** :
 ```c
-struct dog
-{
-    char *name;
-    float age;
-    char *owner;
+struct dog {
+    char *name;      // Pointeur vers le nom
+    float age;       // Âge du chien
+    char *owner;     // Pointeur vers le propriétaire
 };
 ```
 
-Cela crée un type appelé `struct dog`, qui possède trois membres :
-- `name` : un pointeur vers une chaîne de caractères
-- `age` : un nombre flottant
-- `owner` : un pointeur vers une chaîne de caractères
+### Pourquoi les Structures ?
 
-### Créer une variable de type structure
+Sans structures, il faudrait gérer trois variables séparées pour chaque chien :
+```c
+char *dog1_name = "Buddy";
+float dog1_age = 3.5;
+char *dog1_owner = "Alice";
+
+char *dog2_name = "Luna";
+float dog2_age = 2.0;
+char *dog2_owner = "Bob";
+```
+
+**Avec structures** :
+```c
+struct dog dog1 = {"Buddy", 3.5, "Alice"};
+struct dog dog2 = {"Luna", 2.0, "Bob"};
+```
+
+**Beaucoup plus lisible et maintainable !**
+
+### Typedef pour Simplifier
+
+***Typedef** crée un alias pour un type :
 
 ```c
-struct dog my_dog;
-
-my_dog.name = "Buddy";
-my_dog.age = 3.5;
-my_dog.owner = "John";
-```
-
----
-
-## 2. Accéder aux membres d'une structure
-
-### Avec une variable simple (utiliser le point `.`)
-
-```c
-struct dog my_dog;
-
-my_dog.name = "Rex";
-my_dog.age = 5.0;
-
-printf("Nom: %s\n", my_dog.name);    /* Affiche: Nom: Rex */
-printf("Âge: %.1f\n", my_dog.age);   /* Affiche: Âge: 5.0 */
-```
-
-### Avec un pointeur (utiliser la flèche `->`)
-
-```c
-struct dog *ptr = &my_dog;
-
-ptr->name = "Buddy";
-ptr->age = 2.5;
-
-printf("Nom: %s\n", ptr->name);
-printf("Âge: %.1f\n", ptr->age);
-```
-
-L'opérateur `->` est équivalent à `(*pointeur).membre`, mais plus lisible.
-
----
-
-## 3. Pointeurs et structures
-
-Les pointeurs sont essentiels pour passer une structure à une fonction et pouvoir la modifier.
-
-### Passer une structure par référence
-
-```c
-/**
- * init_dog - initializes a variable of type struct dog
- * @d: pointer to struct dog to initialize
- * @name: name of the dog
- * @age: age of the dog
- * @owner: owner of the dog
- */
-void init_dog(struct dog *d, char *name, float age, char *owner)
-{
-    if (d == NULL)
-        return;
-
-    d->name = name;
-    d->age = age;
-    d->owner = owner;
-}
-```
-
-**Utilisation :**
-```c
-struct dog my_dog;
-init_dog(&my_dog, "Buddy", 3.5, "John");
-```
-
-Le `&` passe l'adresse de la structure, ce qui permet à la fonction de la modifier.
-
-### Afficher le contenu d'une structure
-
-```c
-/**
- * print_dog - prints a struct dog
- * @d: pointer to struct dog to print
- * Description: If an element of d is NULL, print (nil) instead
- */
-void print_dog(struct dog *d)
-{
-    if (d == NULL)
-        return;
-
-    printf("Name: %s\n", d->name ? d->name : "(nil)");
-    printf("Age: %.6f\n", d->age);
-    printf("Owner: %s\n", d->owner ? d->owner : "(nil)");
-}
-```
-
-**Sortie :**
-```
-Name: Buddy
-Age: 3.500000
-Owner: John
-```
-
----
-
-## 4. Typedef
-
-`typedef` permet de créer un **alias** pour un type, rendant le code plus lisible.
-
-### Sans typedef
-
-```c
-struct dog my_dog;
-struct dog *ptr = &my_dog;
-```
-
-### Avec typedef
-
-```c
-typedef struct dog dog_t;
-
-dog_t my_dog;
-dog_t *ptr = &my_dog;
-```
-
-L'alias `dog_t` est plus court que `struct dog`.
-
-### Typedef avec définition implicite
-
-```c
+// Définir et créer un alias en même temps
 typedef struct dog
 {
     char *name;
@@ -173,95 +61,358 @@ typedef struct dog
 } dog_t;
 ```
 
-Cela définit la structure ET crée l'alias `dog_t` en une seule opération.
+Maintenant on peut utiliser `dog_t` au lieu de `struct dog` :
+```c
+dog_t my_dog = {"Rex", 5.0, "Charlie"};
+```
+
+### Accès aux Membres
+
+**Avec une variable** (valeur) :
+```c
+struct dog my_dog = {"Buddy", 3.5, "Alice"};
+printf("%s\n", my_dog.name);      // Buddy
+printf("%.1f\n", my_dog.age);     // 3.5
+```
+
+**Avec un pointeur** (très commun) :
+```c
+struct dog *my_dog_ptr = &my_dog;
+printf("%s\n", my_dog_ptr->name);  // Buddy (opérateur ->)
+```
+
+> **Note** : Avec un pointeur, on utilise `->` au lieu de `.`
 
 ---
 
-## 5. Allocation dynamique avec structures
+## 📋 Fichiers et Exercices
 
-Pour créer une structure dynamiquement avec `malloc`, il faut :
-1. Allouer la mémoire pour la structure
-2. Copier les chaînes dans la mémoire allouée (puisque les pointeurs pointent sur des données temporaires)
-3. Libérer la mémoire avec `free`
+### 1. `1-init_dog.c` — Initialiser une Structure
 
-### Créer une nouvelle structure dynamiquement
+**Objectif** : Créer une fonction qui initialise les membres d'une structure `dog`.
 
+**Concept** : Passer une structure par pointeur pour la modifier.
+
+**Exemple de code** :
+```c
+#include "dog.h"
+
+void init_dog(struct dog *d, char *name, float age, char *owner)
+{
+    if (d == NULL)              // Validation du pointeur
+        return;
+
+    d->name = name;             // Initialiser via pointeur
+    d->age = age;
+    d->owner = owner;
+}
+```
+
+**Utilisation** :
+```c
+struct dog my_dog;
+init_dog(&my_dog, "Buddy", 3.5, "Alice");
+
+printf("%s\n", my_dog.name);    // Buddy
+printf("%.1f\n", my_dog.age);   // 3.5
+printf("%s\n", my_dog.owner);   // Alice
+```
+
+**Points Clés** :
+- On passe un **pointeur** (`&my_dog`) pour modifier la structure
+- On utilise `->` pour accéder aux membres via un pointeur
+- On vérifie que le pointeur n'est pas NULL
+
+---
+
+### 2. `2-print_dog.c` — Afficher une Structure
+
+**Objectif** : Créer une fonction qui affiche les informations d'un chien.
+
+**Concept** : Gérer les valeurs NULL avec des vérifications et affichages alternatifs.
+
+**Exemple de code** :
+```c
+#include <stdio.h>
+#include "dog.h"
+
+void print_dog(struct dog *d)
+{
+    if (d == NULL)
+        return;
+
+    // Utilise l'opérateur ternaire pour gérer les NULL
+    printf("Name: %s\n", d->name ? d->name : "(nil)");
+    printf("Age: %.6f\n", d->age);
+    printf("Owner: %s\n", d->owner ? d->owner : "(nil)");
+}
+```
+
+**Utilisation** :
+```c
+struct dog dog1 = {"Rex", 2.5, "Charlie"};
+struct dog dog2 = {NULL, 1.0, "Diana"};
+
+print_dog(&dog1);
+// Output:
+// Name: Rex
+// Age: 2.500000
+// Owner: Charlie
+
+print_dog(&dog2);
+// Output:
+// Name: (nil)
+// Age: 1.000000
+// Owner: Diana
+```
+
+**Points Clés** :
+- Gérer les pointeurs NULL avec des vérifications
+- Utiliser l'opérateur ternaire (`condition ? valeur_true : valeur_false`)
+- Formatter l'affichage des floats avec `%.6f`
+
+---
+
+### 4. `4-new_dog.c` — Créer une Structure Dynamiquement
+
+**Objectif** : Créer une nouvelle structure `dog` en allouant la mémoire dynamiquement.
+
+**Concept** :
+- Utiliser `malloc()` pour allouer la mémoire de la structure
+- Copier les chaînes de caractères (ne pas juste les pointer)
+- Retourner un pointeur vers la nouvelle structure
+
+**Exemple de code** :
 ```c
 #include <stdlib.h>
-#include <string.h>
+#include "dog.h"
 
+// Fonction helper pour copier une chaîne
+char *_strcpy(char *dest, char *src)
+{
+    int i = 0;
+    while (src[i])
+    {
+        dest[i] = src[i];
+        i++;
+    }
+    dest[i] = '\0';
+    return (dest);
+}
+
+// Fonction helper pour la longueur d'une chaîne
+int _strlen(char *s)
+{
+    int i = 0;
+    while (s[i])
+        i++;
+    return (i);
+}
+
+// Créer un nouveau chien
 dog_t *new_dog(char *name, float age, char *owner)
 {
     dog_t *d;
 
-    if (name == NULL || owner == NULL)
-        return (NULL);
-
-    d = malloc(sizeof(dog_t));  /* Allouer la structure */
+    d = malloc(sizeof(dog_t));
     if (d == NULL)
         return (NULL);
 
-    d->name = malloc(_strlen(name) + 1);      /* Allouer pour le nom */
+    // Allouer et copier le nom
+    d->name = malloc(_strlen(name) + 1);
     if (d->name == NULL)
+    {
+        free(d);
         return (NULL);
-    d->name = _strcpy(d->name, name);
+    }
+    _strcpy(d->name, name);
 
     d->age = age;
 
-    d->owner = malloc(_strlen(owner) + 1);    /* Allouer pour le propriétaire */
+    // Allouer et copier le propriétaire
+    d->owner = malloc(_strlen(owner) + 1);
     if (d->owner == NULL)
+    {
+        free(d->name);
+        free(d);
         return (NULL);
-    d->owner = _strcpy(d->owner, owner);
+    }
+    _strcpy(d->owner, owner);
 
     return (d);
 }
 ```
 
-### Libérer une structure dynamique
-
+**Utilisation** :
 ```c
+dog_t *my_dog = new_dog("Buddy", 3.5, "Alice");
+if (my_dog != NULL)
+{
+    printf("%s belongs to %s\n", my_dog->name, my_dog->owner);
+    // Buddy belongs to Alice
+
+    free(my_dog->name);
+    free(my_dog->owner);
+    free(my_dog);
+}
+```
+
+**Points Clés** :
+- `malloc()` alloue la mémoire, **il faut la libérer après**
+- Toujours vérifier que `malloc()` a réussi (retour != NULL)
+- Copier les chaînes au lieu de les pointer directement
+- Libération : d'abord les membres, puis la structure
+
+---
+
+### 5. `5-free_dog.c` — Libérer une Structure
+
+**Objectif** : Créer une fonction qui libère la mémoire allouée pour une structure dog.
+
+**Concept** : Libérer correctement la mémoire dynamique.
+
+**Exemple de code** :
+```c
+#include <stdlib.h>
+#include "dog.h"
+
 void free_dog(dog_t *d)
 {
     if (d == NULL)
         return;
 
-    free(d->name);      /* Libérer le nom */
-    free(d->owner);     /* Libérer le propriétaire */
-    free(d);            /* Libérer la structure elle-même */
+    free(d->name);    // Libérer le nom
+    free(d->owner);   // Libérer le propriétaire
+    free(d);          // Libérer la structure elle-même
 }
 ```
 
-**Important :** Libérer les membres avant de libérer la structure !
+**Utilisation** :
+```c
+dog_t *my_dog = new_dog("Luna", 2.0, "Bob");
+
+// ... utiliser my_dog ...
+
+free_dog(my_dog);  // Libère tous les allocations
+```
+
+**Points Clés** :
+- Vérifier NULL avant de libérer
+- Libérer les membres pointés d'abord
+- Puis libérer la structure elle-même
+- Évite les **memory leaks**
 
 ---
 
-## 6. Explication des fichiers
+## 📚 Fichier Header Typique
 
-| Fichier | Description |
-|---|---|
-| `dog.h` | Fichier d'en-tête contenant la définition de `struct dog` et les prototypes |
-| `1-init_dog.c` | Initialise une structure `dog` donnée |
-| `2-print_dog.c` | Affiche le contenu d'une structure `dog` |
-| `4-new_dog.c` | Crée dynamiquement une nouvelle structure `dog` avec copies des chaînes |
-| `5-free_dog.c` | Libère une structure `dog` créée dynamiquement |
+```c
+#ifndef DOG_H
+#define DOG_H
+
+#include <stdlib.h>
+
+typedef struct dog
+{
+    char *name;
+    float age;
+    char *owner;
+} dog_t;
+
+void init_dog(struct dog *d, char *name, float age, char *owner);
+void print_dog(struct dog *d);
+dog_t *new_dog(char *name, float age, char *owner);
+void free_dog(dog_t *d);
+
+#endif
+```
 
 ---
 
-## 7. Points clés
+## 🔑 Points Clés à Retenir
 
-- Une structure regroupe des variables de types différents.
-- Accéder aux membres d'une structure avec le point (`.`) ou la flèche (`->` pour les pointeurs).
-- Passer une structure par pointeur (`&variable`) pour pouvoir la modifier dans une fonction.
-- `typedef` crée un alias pour simplifier la syntaxe.
-- Avec allocation dynamique, allouer **individuellement** les chaînes dans la structure.
-- Toujours libérer les pointeurs **avant** de libérer la structure elle-même.
+| Concept | Explication |
+|---------|------------|
+| `struct` | Grouper plusieurs variables liées |
+| `.` (point) | Accéder aux membres avec une variable |
+| `->` (flèche) | Accéder aux membres avec un pointeur |
+| `typedef` | Créer un alias court pour un type |
+| `malloc()` | Allouer de la mémoire dynamiquement |
+| `free()` | Libérer la mémoire allouée |
+| Copier chaînes | Ne pas juste pointer, allouer et copier |
 
 ---
 
-## 8. Erreurs courantes
+## ⚠️ Erreurs Courantes
 
-- **Oublier de vérifier `NULL`** avant d'utiliser un pointeur → crash ou comportement indéfini.
-- **Confondre `.` et `->`** → `.` pour les variables, `->` pour les pointeurs.
-- **Oublier de copier les chaînes** → Si on assigne des pointeurs temporaires, les données disparaissent.
-- **Libérer dans le mauvais ordre** → Libérer la structure avant ses membres conduit à une fuite mémoire.
-- **Ne pas initialiser une structure statique** → Les valeurs non initialisées sont indéterminées.
+1. **Oublier l'allocation mémoire pour les pointeurs internes**
+   ```c
+   // FAUX : on pointe vers une chaîne locale qui disparaît
+   d->name = name;  // Risqué si name est local
+
+   // BON : allouer et copier
+   d->name = malloc(_strlen(name) + 1);
+   _strcpy(d->name, name);
+   ```
+
+2. **Mélanger `.` et `->`**
+   ```c
+   struct dog d = {"Buddy", 3.5, "Alice"};
+   struct dog *d_ptr = &d;
+
+   // BON :
+   d.name        // variable directe
+   d_ptr->name   // pointeur
+   ```
+
+3. **Oublier de libérer la mémoire**
+   ```c
+   // FAUX : memory leak
+   dog_t *dog = new_dog("Rex", 5.0, "Charlie");
+   // ... fin du programme sans free
+
+   // BON :
+   free_dog(dog);
+   ```
+
+4. **Ne pas vérifier NULL après malloc**
+   ```c
+   // FAUX : crash potentiel
+   d = malloc(sizeof(dog_t));
+   d->name = malloc(...);  // Could be NULL!
+
+   // BON :
+   d = malloc(sizeof(dog_t));
+   if (d == NULL)
+       return (NULL);
+   d->name = malloc(...);
+   if (d->name == NULL)
+   {
+       free(d);
+       return (NULL);
+   }
+   ```
+
+---
+
+## 📝 Flux Complet d'Utilisation
+
+```c
+// 1. Déclarer une structure
+struct dog my_dog;
+
+// 2. Initialiser
+init_dog(&my_dog, "Buddy", 3.5, "Alice");
+
+// 3. Afficher
+print_dog(&my_dog);
+
+// 4. Créer dynamiquement
+dog_t *new_buddy = new_dog("Luna", 2.0, "Bob");
+
+// 5. Afficher le nouveau
+print_dog((struct dog *)new_buddy);
+
+// 6. Libérer
+free_dog(new_buddy);
+```

@@ -218,6 +218,114 @@ int _atoi(char *s)
 
 `s[i] - '0'` transforme le caractère chiffre en entier (ex : `'7' - '0' = 7`).
 
+### Chercher un caractère dans une chaîne — 2-strchr.c
+
+```c
+char *_strchr(char *s, char c)
+{
+    while (s[i] != '\0')
+    {
+        if (s[i] == c)
+            return (s + i);  /* retourne un pointeur vers c */
+        i++;
+    }
+    if (c == '\0')           /* cherche aussi le \0 ! */
+        return (s + i);
+    return (NULL);
+}
+```
+
+**Utilisation** :
+```c
+char msg[] = "Hello";
+char *p = _strchr(msg, 'l');
+printf("%s\n", p);  /* "llo" (le pointeur apres le 'l') */
+
+p = _strchr(msg, 'x');
+printf("%p\n", p);  /* NULL (pas trouvé) */
+```
+
+### Convertir une chaîne en majuscules — 5-string_toupper.c
+
+```c
+char *string_toupper(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (str[i] >= 'a' && str[i] <= 'z')
+            str[i] = str[i] - 32;  /* convertir minuscule en majuscule */
+    }
+    return (str);
+}
+```
+
+**Astuce** : `'a' - 'A' == 32`, donc soustraire 32 converte minuscule → majuscule.
+
+**Utilisation** :
+```c
+char str[] = "hello";
+string_toupper(str);
+printf("%s\n", str);  /* "HELLO" */
+```
+
+### Mettre en majuscule les premières lettres — 6-cap_string.c
+
+```c
+char *cap_string(char *str)
+{
+    char sep[] = " \t\n,;.!?\"(){}";  /* séparateurs (début de mot) */
+    int j;
+
+    if (str[0] >= 'a' && str[0] <= 'z')
+        str[0] = str[0] - 32;  /* 1ère lettre */
+
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        /* Si c'est un séparateur, majusculer la lettre suivante */
+        for (j = 0; sep[j] != '\0'; j++)
+        {
+            if (str[i] == sep[j] && str[i + 1] >= 'a' && str[i + 1] <= 'z')
+                str[i + 1] = str[i + 1] - 32;
+        }
+    }
+    return (str);
+}
+```
+
+**Utilisation** :
+```c
+char str[] = "hello world! how are you?";
+cap_string(str);
+printf("%s\n", str);  /* "Hello World! How Are You?" */
+```
+
+### Encoder en "1337 speak" (leet) — 7-leet.c
+
+```c
+char *leet(char *str)
+{
+    char letters[] = "aAeEoOtTlL";
+    char numbers[] = "4433007711";  /* a→4, A→4, e→3, E→3, etc. */
+
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            if (str[i] == letters[j])
+                str[i] = numbers[j];  /* remplacer */
+        }
+    }
+    return (str);
+}
+```
+
+**Utilisation** :
+```c
+char str[] = "hello";
+leet(str);
+printf("%s\n", str);  /* "h3110" (e→3, l→1, o→0) */
+```
+
 ---
 
 ## 5. Explication des fichiers
@@ -237,9 +345,17 @@ int _atoi(char *s)
 | `0-strcat.c` | Concaténation | Réimplémente `strcat` |
 | `1-strncat.c` | Concaténation limitée | Réimplémente `strncat` (max n chars) |
 | `2-strncpy.c` | Copie limitée | Réimplémente `strncpy` |
+| `2-strchr.c` | Recherche de caractère | Localise un caractère dans une chaîne |
 | `3-strcmp.c` | Comparaison | Réimplémente `strcmp` |
+| `3-strspn.c` | Longueur du préfixe | Compte les caractères d'un ensemble |
+| `4-strpbrk.c` | Recherche multiple | Localise le 1er char d'un ensemble |
+| `5-string_toupper.c` | Conversion minuscule→majuscule | Convertit tous les caractères |
+| `5-strstr.c` | Recherche de sous-chaîne | Localise une sous-chaîne |
+| `6-cap_string.c` | Capitalisation | Met en majuscule les premiers caractères de mots |
+| `7-leet.c` | Encodage amusant | Convertit en "1337 speak" |
 | `0-memset.c` | Remplissage mémoire | Réimplémente `memset` |
 | `1-memcpy.c` | Copie mémoire | Réimplémente `memcpy` |
+| `8-print_diagsums.c` | Tableau 2D | Affiche les sommes des diagonales |
 | `100-atoi.c` | Conversion | Convertit une chaîne en entier |
 
 ---

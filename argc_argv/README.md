@@ -1,221 +1,276 @@
-# Argc & Argv : Arguments de Ligne de Commande
+# Command-Line Arguments (argc & argv)
 
-Ce dossier introduit les **arguments de ligne de commande** en C. Lorsqu'un programme est lancé, on peut lui passer des arguments que le programme peut lire et utiliser.
+## 📚 Objectifs d'Apprentissage
 
----
-
-## Table des matières
-
-1. [Argc et Argv](#1-argc-et-argv)
-2. [Syntaxe et concepts](#2-syntaxe-et-concepts)
-3. [Conversion de chaînes](#3-conversion-de-chaînes)
-4. [Validation des arguments](#4-validation-des-arguments)
-5. [Explication des fichiers](#5-explication-des-fichiers)
-6. [Points clés](#6-points-clés)
-7. [Erreurs courantes](#7-erreurs-courantes)
+- Comprendre le rôle de `argc` et `argv` dans la fonction `main()`
+- Traiter les arguments passés en ligne de commande
+- Valider et convertir les arguments
+- Parser les arguments numériques avec `atoi()`
+- Gérer les erreurs d'arguments invalides
 
 ---
 
-## 1. Argc et Argv
+## 🎯 Concepts Clés
 
-Chaque programme C a accès aux arguments de la ligne de commande via les paramètres spéciaux de `main()`:
+### Qu'est-ce que argc et argv ?
+
+Quand vous exécutez un programme C en ligne de commande, vous pouvez lui passer des **arguments**. La fonction `main()` reçoit ces arguments via deux paramètres spéciaux :
 
 ```c
 int main(int argc, char *argv[])
-{
-    /* ... */
-}
 ```
 
-- **`argc`** (argument count) : Le nombre d'arguments passés au programme (incluant le nom du programme lui-même).
-- **`argv`** (argument vector) : Un tableau de chaînes de caractères contenant les arguments.
+- **`argc`** : **Argument Count** — nombre d'arguments (entier)
+- **`argv`** : **Argument Vector** — tableau de chaînes de caractères contenant les arguments
 
-### Exemple d'utilisation
+### Exemple d'Exécution
 
-Si tu lances la commande : `./0-whatsmyname hello world`
-
+```bash
+$ ./myprogram arg1 arg2 arg3
 ```
-argc = 3
-argv[0] = "./0-whatsmyname"   (nom du programme)
-argv[1] = "hello"              (1er argument)
-argv[2] = "world"              (2e argument)
-```
+
+- `argc` = 4 (le nom du programme compte pour 1)
+- `argv[0]` = "./myprogram" (le nom du programme)
+- `argv[1]` = "arg1"
+- `argv[2]` = "arg2"
+- `argv[3]` = "arg3"
 
 ---
 
-## 2. Syntaxe et concepts
+## 📋 Fichiers et Exercices
 
-### Accéder au nom du programme
+### 0. `0-whatsmyname.c` — Afficher le nom du programme
 
+**Objectif** : Afficher le nom du programme exécuté.
+
+**Concept** : `argv[0]` contient toujours le nom du programme.
+
+**Exemple de code** :
 ```c
-#include <stdio.h>
-
 int main(int argc, char *argv[])
 {
-    (void)argc;  /* On n'utilise pas argc ici, donc on le met en silence */
+    (void)argc;  // On n'a pas besoin de argc
     printf("%s\n", argv[0]);
     return (0);
 }
 ```
 
-**Sortie :** `./0-whatsmyname`
+**Utilisation** :
+```bash
+$ gcc 0-whatsmyname.c -o myprog
+$ ./myprog
+./myprog
+```
 
-### Compter le nombre d'arguments
+---
 
+### 1. `1-args.c` — Compter les arguments
+
+**Objectif** : Afficher le nombre d'arguments passés (sans compter le nom du programme).
+
+**Concept** : `argc` nous donne directement ce nombre. On soustrait 1 pour exclure le programme.
+
+**Exemple de code** :
 ```c
-#include <stdio.h>
-
 int main(int argc, char *argv[])
 {
-    (void)argv;  /* On n'utilise pas argv ici */
-    printf("%d\n", argc);
+    (void)argv;  // On n'a pas besoin de argv
+    printf("%d\n", argc - 1);  // argc - 1 = nombre d'arguments (sans le programme)
     return (0);
 }
 ```
 
-**Sortie :**
-```
-$ ./1-args
-1
-$ ./1-args hello world
+**Utilisation** :
+```bash
+$ gcc 1-args.c -o args
+$ ./args
+0
+$ ./args hello world test
 3
 ```
 
-### Boucler sur les arguments
+---
 
+### 2. `2-args.c` — Lister tous les arguments
+
+**Objectif** : Afficher chaque argument sur une ligne séparée.
+
+**Concept** : Boucle sur `argv` de 0 à `argc - 1`.
+
+**Exemple de code** :
 ```c
-#include <stdio.h>
-
 int main(int argc, char *argv[])
 {
-    int i;
-
-    for (i = 0; i < argc; i++)
-        printf("argv[%d]: %s\n", i, argv[i]);
-    
+    for (int i = 0; i < argc; i++)
+        printf("%s\n", argv[i]);
     return (0);
 }
 ```
 
+**Utilisation** :
+```bash
+$ ./args hello world
+hello
+world
+```
+
 ---
 
-## 3. Conversion de chaînes
+### 3. `3-mul.c` — Multiplier deux nombres
 
-Quand tu reçois un argument, c'est toujours une **chaîne de caractères**. Pour le convertir en nombre, utilise les fonctions de conversion de la librairie `<stdlib.h>` :
+**Objectif** : Multiplier deux nombres passés en arguments et afficher le résultat. Afficher "Error" si le nombre d'arguments est incorrect.
 
-### atoi() : convertir en entier
+**Concepts** :
+- Valider le nombre d'arguments avec `argc`
+- Convertir des chaînes en nombres avec `atoi()`
+- Gérer les erreurs
 
+**Exemple de code** :
 ```c
 #include <stdlib.h>
 
 int main(int argc, char *argv[])
 {
-    int num = atoi(argv[1]);  /* "42" devient 42 */
-    int result = num * 2;
-    printf("%d\n", result);
-    return (0);
-}
-```
-
-**Exemple :**
-```
-$ ./3-mul 10 5
-50
-```
-
-### atof() : convertir en nombre flottant
-
-```c
-#include <stdlib.h>
-#include <stdio.h>
-
-int main(int argc, char *argv[])
-{
-    float num = atof(argv[1]);  /* "3.14" devient 3.14 */
-    return (0);
-}
-```
-
----
-
-## 4. Validation des arguments
-
-Avant d'utiliser les arguments, il faut **vérifier qu'il y en a suffisamment** et qu'ils sont du bon type.
-
-### Vérifier le nombre minimum d'arguments
-
-```c
-int main(int argc, char *argv[])
-{
-    if (argc < 3)  /* Besoin d'au moins 3 (programme + 2 args) */
+    if (argc < 3 || argc > 3)  // Exactement 2 arguments requis
     {
         printf("Error\n");
-        return (1);  /* Retourner 1 pour indiquer une erreur */
+        return (1);
     }
-    
+
     int num1 = atoi(argv[1]);
     int num2 = atoi(argv[2]);
     int result = num1 * num2;
-    
+
     printf("%d\n", result);
     return (0);
 }
 ```
 
-### Vérifier que les arguments sont des chiffres
+**Utilisation** :
+```bash
+$ gcc 3-mul.c -o mul
+$ ./mul 3 4
+12
+$ ./mul 100 2
+200
+$ ./mul 5        // Erreur
+Error
+```
 
+---
+
+### 4. `4-add.c` — Additionner des nombres
+
+**Objectif** : Additionner tous les nombres passés en arguments. Afficher "Error" si un argument n'est pas un nombre valide.
+
+**Concepts** :
+- Boucle sur plusieurs arguments
+- Valider que chaque caractère est un chiffre avec `isdigit()`
+- Convertir et accumuler avec `atoi()`
+- Gestion plus complexe des erreurs
+
+**Exemple de code** :
 ```c
-#include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 int main(int argc, char *argv[])
 {
-    int i, j;
-    
-    for (i = 1; i < argc; i++)           /* Pour chaque argument */
+    int sum = 0;
+
+    if (argc == 1)  // Pas d'arguments
     {
-        for (j = 0; argv[i][j] != '\0'; j++)  /* Pour chaque caractère */
+        printf("0\n");
+        return (0);
+    }
+
+    for (int i = 1; i < argc; i++)  // Parcourt chaque argument
+    {
+        for (int j = 0; argv[i][j] != '\0'; j++)  // Vérifie chaque caractère
         {
-            if (!isdigit(argv[i][j]))    /* Si ce n'est pas un chiffre */
+            if (!isdigit(argv[i][j]))  // N'est pas un chiffre
             {
                 printf("Error\n");
                 return (1);
             }
         }
+        sum += atoi(argv[i]);  // Ajoute le nombre
     }
+
+    printf("%d\n", sum);
     return (0);
 }
 ```
 
----
-
-## 5. Explication des fichiers
-
-| Fichier | Description |
-|---|---|
-| `0-whatsmyname.c` | Affiche le nom du programme (`argv[0]`) |
-| `1-args.c` | Affiche le nombre d'arguments (`argc`) |
-| `2-args.c` | Affiche tous les arguments ligne par ligne |
-| `3-mul.c` | Prend deux nombres en arguments et affiche leur produit |
-| `4-add.c` | Additionne tous les nombres positifs passés en arguments |
-| `main.h` | Fichier d'en-tête avec les prototypes |
-
----
-
-## 6. Points clés
-
-- `argc` inclut toujours le nom du programme (`argv[0]`). Un programme lancé seul a `argc = 1`.
-- `argv` est un tableau de chaînes, donc `argv[0]` est une chaîne, même si elle représente un nombre.
-- Toujours convertir les arguments en nombres via `atoi()`, `atof()`, ou des fonctions similaires.
-- Toujours **valider les arguments** avant de les utiliser.
-- Utiliser `(void)variable;` pour éviter les avertissements du compilateur si une variable n'est pas utilisée.
+**Utilisation** :
+```bash
+$ gcc 4-add.c -o add
+$ ./add 1 2 3 4
+10
+$ ./add 100 50 25
+175
+$ ./add 5 abc      // Erreur
+Error
+$ ./add            // Pas d'arguments
+0
+```
 
 ---
 
-## 7. Erreurs courantes
+## 🔑 Points Clés
 
-- **Oublier que `argc` inclut le nom du programme** → Les indices des arguments commencent à 1, pas 0.
-- **Ne pas vérifier le nombre d'arguments** → Accès à `argv[i]` qui n'existe pas = comportement indéfini.
-- **Oublier de convertir les chaînes en nombres** → Faire `atoi()` est obligatoire pour les calculs.
-- **Ne pas vérifier la validité des arguments** → Un utilisateur peut passer n'importe quoi.
-- **Confondre `argv` (tableau de pointeurs) et `*argv` (chaîne)** → `argv[i]` est une chaîne, pas un caractère.
+| Concept | Explication |
+|---------|------------|
+| `argc` | Nombre d'arguments (incluant le nom du programme) |
+| `argv` | Tableau de chaînes, `argv[0]` est le programme |
+| `(void)` | Cast pour supprimer les avertissements "unused parameter" |
+| `atoi()` | Convertit une chaîne en entier (`ascii to integer`) |
+| `isdigit()` | Vérifie si un caractère est un chiffre (0-9) |
+| Validation | Toujours vérifier `argc` avant d'accéder aux arguments |
+
+---
+
+## ⚠️ Erreurs Courantes
+
+1. **Oublier que `argv[0]` est le programme lui-même**
+   ```c
+   // FAUX : compte le programme comme argument
+   for (int i = 0; i < argc; i++)
+
+   // BON : commence à 1
+   for (int i = 1; i < argc; i++)
+   ```
+
+2. **Ne pas vérifier les limites de `argc`**
+   ```c
+   // FAUX : accès en dehors des limites
+   printf("%s\n", argv[10]);  // Peut crasher!
+
+   // BON : vérifier d'abord
+   if (argc > 10)
+       printf("%s\n", argv[10]);
+   ```
+
+3. **Oublier les includes nécessaires**
+   ```c
+   // Pour atoi() : #include <stdlib.h>
+   // Pour isdigit() : #include <ctype.h>
+   ```
+
+---
+
+## 📝 Exemple Complet d'Utilisation
+
+```bash
+$ gcc 0-whatsmyname.c -o whatsmyname && ./whatsmyname
+./whatsmyname
+
+$ gcc 1-args.c -o args && ./args hello world test
+3
+
+$ gcc 3-mul.c -o mul && ./mul 12 5
+60
+
+$ gcc 4-add.c -o add && ./add 10 20 30 40
+100
+```

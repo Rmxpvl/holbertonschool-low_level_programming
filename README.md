@@ -31,11 +31,16 @@
 | [variables_if_else_while/](./variables_if_else_while/) | Variables, conditions, boucles while |
 | [functions_nested_loops/](./functions_nested_loops/) | Fonctions, prototypes, boucles imbriquées |
 | [more_functions_nested_loops/](./more_functions_nested_loops/) | Fonctions avancées, FizzBuzz, formes géométriques |
-| [pointers_arrays_strings/](./pointers_arrays_strings/) | Pointeurs, tableaux, manipulation de chaînes |
+| [argc_argv/](./argc_argv/) | Arguments en ligne de commande, `argc`, `argv`, validation |
+| [pointers_arrays_strings/](./pointers_arrays_strings/) | Pointeurs, tableaux, manipulation de chaînes (28 exercices) |
+| [malloc_free/](./malloc_free/) | Allocation dynamique : `malloc`, `free`, tableaux 2D |
+| [more_malloc_free/](./more_malloc_free/) | Allocation avancée : `malloc_checked`, `calloc`, `array_range` |
+| [function_pointers/](./function_pointers/) | Pointeurs de fonction, callbacks, calculatrice |
+| [structures_typedef/](./structures_typedef/) | Structures, `typedef`, allocation dynamique de structures |
+| [variadic_functions/](./variadic_functions/) | Fonctions variadiques, `va_list`, `va_arg` |
 | [intro_debugging/](./intro_debugging/) | Exercices de débogage : sommes, tables, boucles |
 | [benchmarking/](./benchmarking/) | Mesure de performances CPU, comparaison O(n²) vs O(n) |
 | [simple-calculator/](./simple-calculator/) | Calculatrice interactive en C |
-| [more_malloc_free/](./more_malloc_free/) | Allocation dynamique avancée avec `malloc_checked` |
 
 ---
 
