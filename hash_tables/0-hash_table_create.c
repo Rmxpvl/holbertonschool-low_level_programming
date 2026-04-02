@@ -2,39 +2,38 @@
 #include "hash_tables.h"
 
 /**
- * hash_table_create - Creates a hash table
- * @size: The size of the array
+ * hash_table_create - cree une table de hachage vide
+ * @size: nombre de cases du tableau
  *
- * Return: A pointer to the newly created hash table, or NULL if it failed
+ * Return: adresse de la table creee, ou NULL en cas d'echec
  */
-
 hash_table_t *hash_table_create(unsigned long int size)
 {
-hash_table_t *ht;
-unsigned long int i;
+	hash_table_t *ht;
+	unsigned long int i;
 
-if (size == 0)
-return (NULL);
+	if (size == 0)
+		return (NULL);
 
-/* 1. Allocation de la structure */
-ht = malloc(sizeof(hash_table_t));
-if (ht == NULL)
-return (NULL);
+	/* Allocation de la structure principale de la table */
+	ht = malloc(sizeof(hash_table_t));
+	if (ht == NULL)
+		return (NULL);
 
-/* 2. Initialisation de la taille */
-ht->size = size;
+	/* Sauvegarde de la taille demandee */
+	ht->size = size;
 
-/* 3. Allocation du tableau */
-ht->array = malloc(sizeof(hash_node_t *) * size);
-if (ht->array == NULL)
-{
-free(ht);
-return (NULL);
-}
+	/* Allocation du tableau de buckets */
+	ht->array = malloc(sizeof(hash_node_t *) * size);
+	if (ht->array == NULL)
+	{
+		free(ht);
+		return (NULL);
+	}
 
-/* 4. Initialiser chaque case a NULL */
-for (i = 0; i < size; i++)
-ht->array[i] = NULL;
+	/* Chaque bucket commence vide: pointeur a NULL */
+	for (i = 0; i < size; i++)
+		ht->array[i] = NULL;
 
-return (ht);
+	return (ht);
 }

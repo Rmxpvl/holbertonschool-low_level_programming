@@ -2,12 +2,11 @@
 #define HASH_TABLES_H
 
 /**
- * struct hash_node_s - Node of a hash table
+ * struct hash_node_s - Noeud d'une table de hachage
  *
- * @key: The key, string
- * The key is unique in the HashTable
- * @value: The value corresponding to a key
- * @next: A pointer to the next node of the List
+ * @key: Cle (chaine) associee a la valeur
+ * @value: Valeur stockee pour la cle
+ * @next: Noeud suivant dans la liste chainee (gestion des collisions)
  */
 typedef struct hash_node_s
 {
@@ -17,12 +16,11 @@ typedef struct hash_node_s
 } hash_node_t;
 
 /**
- * struct hash_table_s - Hash table data structure
+ * struct hash_table_s - Structure principale de table de hachage
  *
- * @size: The size of the array
- * @array: An array of size @size
- * Each cell of this array is a pointer to the first node of a linked list,
- * because we want our HashTable to use a Chaining collision handling
+ * @size: Nombre de cases dans le tableau
+ * @array: Tableau de pointeurs vers des listes de noeuds
+ * Chaque case pointe vers une liste chainee pour resoudre les collisions.
  */
 typedef struct hash_table_s
 {
