@@ -47,86 +47,200 @@ Forme C equivalente:
 hash = ((hash << 5) + hash) + c;
 ```
 
-## 6. Parcours des exercices du dossier
+## 6. Parcours detaille des exercices (avec code)
 
 ### Exercice 0 - `hash_table_create`
 Fichier: [0-hash_table_create.c](0-hash_table_create.c)
 
-Ce qui se passe:
-1. verifier `size` (interdire 0)
-2. allouer la structure `hash_table_t`
-3. allouer le tableau de buckets (`hash_node_t *`)
-4. initialiser chaque bucket a `NULL`
+Extrait cle:
 
-But: partir d'une table vide et sure.
+```c
+if (size == 0)
+	return (NULL);
+
+ht = malloc(sizeof(hash_table_t));
+if (ht == NULL)
+	return (NULL);
+
+ht->array = malloc(sizeof(hash_node_t *) * size);
+if (ht->array == NULL)
+{
+	free(ht);
+	return (NULL);
+}
+
+for (i = 0; i < size; i++)
+	ht->array[i] = NULL;
+```
+
+Explication etape par etape:
+1. `size == 0` est refuse car une table sans bucket ne peut pas fonctionner.
+2. `malloc(sizeof(hash_table_t))` reserve la structure principale.
+3. Si cette allocation echoue, on retourne `NULL` immediatement.
+4. On alloue ensuite le tableau de buckets `array`.
+5. Si `array` echoue, on libere `ht` pour eviter une fuite memoire.
+6. On initialise chaque case du tableau a `NULL` pour signaler des buckets vides.
 
 ### Exercice 1 - `hash_djb2`
 Fichier: [1-djb2.c](1-djb2.c)
 
-Ce qui se passe:
-1. initialiser le hash a `5381`
-2. parcourir la chaine caractere par caractere
-3. mettre a jour le hash avec la formule djb2
+Extrait cle:
 
-But: convertir une cle texte en nombre deterministe.
+```c
+hash = 5381;
+while ((c = *str++))
+	hash = ((hash << 5) + hash) + c;
+```
+
+Explication etape par etape:
+1. `hash` demarre a `5381`, constante classique de l'algorithme djb2.
+2. `*str++` lit un caractere puis avance le pointeur.
+3. La boucle s'arrete sur `\0` (fin de chaine).
+4. `((hash << 5) + hash)` equivaut a `hash * 33`.
+5. On ajoute `c` pour integrer le caractere courant dans le hash final.
 
 ### Exercice 2 - `key_index`
 Fichier: [2-key_index.c](2-key_index.c)
 
-Ce qui se passe:
-1. verifier les cas invalides (`key` nulle/vide, `size == 0`)
-2. calculer `hash_djb2(key)`
-3. appliquer `% size` pour obtenir un indice valide du tableau
+Extrait cle:
 
-But: savoir exactement dans quel bucket chercher/ajouter.
+```c
+if (key == 0 || *key == '\0' || size == 0)
+	return (0);
+
+return (hash_djb2(key) % size);
+```
+
+Explication etape par etape:
+1. On filtre les entrees invalides (`key` nulle, vide, ou `size` nulle).
+2. `hash_djb2(key)` produit un grand entier pseudo-aleatoire.
+3. Le modulo `% size` ramene ce nombre dans l'intervalle valide des indices.
+4. Le resultat indique le bucket cible dans `ht->array[index]`.
 
 ### Exercice 3 - `hash_table_set`
 Fichier: [3-hash_table_set.c](3-hash_table_set.c)
 
-Ce qui se passe:
-1. verifier les arguments (`ht`, `key`, `value`)
-2. calculer l'indice avec `key_index`
-3. parcourir la liste du bucket:
-	- si la cle existe: dupliquer la nouvelle valeur et remplacer l'ancienne
-4. sinon creer un nouveau noeud (duplication de `key` et `value`)
-5. inserer le noeud en tete de liste (collision handling)
+Extrait cle (fonction principale):
 
-But: ajouter ou mettre a jour une paire cle/valeur en securite memoire.
+```c
+index = key_index((const unsigned char *)key, ht->size);
+if (update_existing_key(ht->array[index], key, value) == 1)
+	return (1);
+
+node = create_node(key, value);
+if (node == 0)
+	return (0);
+
+node->next = ht->array[index];
+ht->array[index] = node;
+```
+
+Extrait cle (mise a jour):
+
+```c
+if (strcmp(tmp->key, key) == 0)
+{
+	new_value = strdup(value);
+	if (new_value == 0)
+		return (0);
+	free(tmp->value);
+	tmp->value = new_value;
+	return (1);
+}
+```
+
+Explication etape par etape:
+1. On calcule le bucket cible avec `key_index`.
+2. On parcourt la liste pour voir si la cle existe deja.
+3. Si la cle existe, on duplique la nouvelle valeur puis on remplace l'ancienne.
+4. Si la cle n'existe pas, on alloue un nouveau noeud.
+5. `key` et `value` sont dupliquees (`strdup`) pour que la table possede sa memoire.
+6. En collision, insertion en tete: rapide et conforme a la consigne.
 
 ### Exercice 4 - `hash_table_get`
 Fichier: [4-hash_table_get.c](4-hash_table_get.c)
 
-Ce qui se passe:
-1. verifier les entrees
-2. calculer le bucket cible avec `key_index`
-3. parcourir la liste chainee et comparer les cles (`strcmp`)
-4. retourner la valeur si trouvee, sinon `NULL`
+Extrait cle:
 
-But: recuperer rapidement une valeur depuis une cle.
+```c
+index = key_index((const unsigned char *)key, ht->size);
+node = ht->array[index];
+
+while (node)
+{
+	if (strcmp(node->key, key) == 0)
+		return (node->value);
+	node = node->next;
+}
+```
+
+Explication etape par etape:
+1. On calcule l'indice theorique de la cle.
+2. On va au debut de la liste chainee de ce bucket.
+3. On compare les cles une par une avec `strcmp`.
+4. A la premiere egalite, on retourne la valeur associee.
+5. Si la fin de liste est atteinte sans match, on retourne `NULL`.
 
 ### Exercice 5 - `hash_table_print`
 Fichier: [5-hash_table_print.c](5-hash_table_print.c)
 
-Ce qui se passe:
-1. ne rien afficher si `ht == NULL`
-2. afficher `{` puis parcourir les buckets dans l'ordre du tableau
-3. dans chaque bucket, parcourir la liste et afficher `'<key>': '<value>'`
-4. gerer proprement les virgules entre elements
-5. fermer avec `}`
+Extrait cle:
 
-But: visualiser l'etat logique de la table.
+```c
+printf("{");
+first = 1;
+for (i = 0; i < ht->size; i++)
+{
+	node = ht->array[i];
+	while (node)
+	{
+		if (!first)
+			printf(", ");
+		printf("'%s': '%s'", node->key, node->value);
+		first = 0;
+		node = node->next;
+	}
+}
+printf("}\n");
+```
+
+Explication etape par etape:
+1. On ouvre l'affichage avec `{`.
+2. `first` sert a savoir s'il faut afficher une virgule avant un element.
+3. On parcourt chaque bucket du tableau dans l'ordre croissant des indices.
+4. Dans chaque bucket, on parcourt la liste chainee dans son ordre courant.
+5. Format impose respecte: `'<key>': '<value>'`.
+6. On ferme avec `}` et un retour a la ligne.
 
 ### Exercice 6 - `hash_table_delete`
 Fichier: [6-hash_table_delete.c](6-hash_table_delete.c)
 
-Ce qui se passe:
-1. verifier `ht`
-2. pour chaque bucket, parcourir la liste
-3. liberer dans le bon ordre: `key`, `value`, puis noeud
-4. liberer le tableau `array`
-5. liberer la structure `ht`
+Extrait cle:
 
-But: eviter toute fuite memoire.
+```c
+for (i = 0; i < ht->size; i++)
+{
+	node = ht->array[i];
+	while (node)
+	{
+		tmp = node->next;
+		free(node->key);
+		free(node->value);
+		free(node);
+		node = tmp;
+	}
+}
+
+free(ht->array);
+free(ht);
+```
+
+Explication etape par etape:
+1. On parcourt tous les buckets de la table.
+2. Dans chaque bucket, on parcourt tous les noeuds de la liste.
+3. On sauvegarde `next` avant `free(node)` pour ne pas perdre la chaine.
+4. On libere dans l'ordre: `key`, `value`, puis le noeud.
+5. Une fois toutes les listes liberees, on libere le tableau, puis la table.
 
 ## 7. Complexite
 
