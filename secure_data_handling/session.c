@@ -38,25 +38,28 @@ if (!s->id)
 
 int session_set_data(session_t *s, const unsigned char *data, size_t data_len)
 {
-	unsigned char *tmp;
+    unsigned char *tmp;
 
-	if (!s)
-		return 0;
-	if (data_len == 0) {
-		free(s->data);
-		s->data = NULL;
-		s->data_len = 0;
-		return 1;
-	}
+    if (!s)
+        return 0;
 
-	tmp = (unsigned char *)realloc(s->data, data_len);
-	if (!tmp)
-		return 0;
+    if (data_len == 0) {
+        free(s->data);
+        s->data = NULL;
+        s->data_len = 0;
+        return 1;
+    }
 
-s->data = tmp;
-	memcpy(s->data, data, data_len);
-	s->data_len = data_len;
-	return 1;
+    tmp = realloc(s->data, data_len);
+    if (!tmp)
+        return 0;
+
+    s->data = tmp;
+
+    memcpy(s->data, data, data_len);
+    s->data_len = data_len;
+
+    return 1;
 }
 
 void session_destroy(session_t *s)
