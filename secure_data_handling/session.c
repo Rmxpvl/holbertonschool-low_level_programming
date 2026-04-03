@@ -53,9 +53,6 @@ int session_set_data(session_t *s, const unsigned char *data, size_t data_len)
 	if (!tmp)
 		return 0;
 
-if (!tmp)
-    return 0;
-
 s->data = tmp;
 	memcpy(s->data, data, data_len);
 	s->data_len = data_len;
