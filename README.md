@@ -17,9 +17,12 @@
 | [🧠 memory_management/](./memory_management/) | Pointeurs, tableaux, chaînes, malloc/free |
 | [🏗️ data_structures/](./data_structures/) | Listes chaînées, piles, files, arbres binaires |
 | [🐛 debugging/](./debugging/) | Débogage : printf, GDB, Valgrind, méthode |
+| [🔬 dynamic_analysis/](./dynamic_analysis/) | Analyse dynamique : GDB avancé, Valgrind en pratique |
+| [🔒 secure_data_handling/](./secure_data_handling/) | Gestion sécurisée des données en C |
 | [📋 cheatsheets/](./cheatsheets/) | Fiches de référence rapide (C, Linux, Git, Débogage) |
 | [❌ mistakes/](./mistakes/) | Erreurs courantes : code faux, explication, correction |
 | [🧪 experiments/](./experiments/) | Petits programmes C pour tester des concepts |
+| [🤖 ai_memory_visualizer_valgrind_tracer/](./ai_memory_visualizer_valgrind_tracer/) | Outils de visualisation mémoire et traçage Valgrind |
 
 ---
 
@@ -38,6 +41,11 @@
 | [function_pointers/](./function_pointers/) | Pointeurs de fonction, callbacks, calculatrice |
 | [structures_typedef/](./structures_typedef/) | Structures, `typedef`, allocation dynamique de structures |
 | [variadic_functions/](./variadic_functions/) | Fonctions variadiques, `va_list`, `va_arg` |
+| [singly_linked_lists/](./singly_linked_lists/) | Listes simplement chaînées : print, len, add, free |
+| [doubly_linked_lists/](./doubly_linked_lists/) | Listes doublement chaînées : insertion, suppression, parcours |
+| [hash_tables/](./hash_tables/) | Tables de hachage : création, insertion, recherche, suppression |
+| [file_io/](./file_io/) | Entrées/sorties fichiers POSIX : `open`, `read`, `write`, `close` |
+| [recursion/](./recursion/) | Récursivité : factorielle, puissance, racine, primalité |
 | [intro_debugging/](./intro_debugging/) | Exercices de débogage : sommes, tables, boucles |
 | [benchmarking/](./benchmarking/) | Mesure de performances CPU, comparaison O(n²) vs O(n) |
 | [simple-calculator/](./simple-calculator/) | Calculatrice interactive en C |
@@ -74,11 +82,13 @@
 ## Progression recommandée
 
 ```
-1. c_programming/    → Bases du C
-2. linux/            → Environnement de travail
-3. git/              → Contrôle de version
-4. memory_management/→ Pointeurs et mémoire
-5. debugging/        → Débogage
-6. data_structures/  → Structures de données
-7. algorithms/       → Complexité et performance
+1. c_programming/     → Bases du C
+2. linux/             → Environnement de travail
+3. git/               → Contrôle de version
+4. memory_management/ → Pointeurs et mémoire
+5. debugging/         → Débogage
+6. data_structures/   → Structures de données
+7. algorithms/        → Complexité et performance
+8. dynamic_analysis/  → Analyse dynamique (GDB, Valgrind)
+9. secure_data_handling/ → Sécurité des données
 ```
